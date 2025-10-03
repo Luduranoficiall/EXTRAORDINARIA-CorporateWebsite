@@ -1,0 +1,35 @@
+# Node
+node_modules/
+dist/
+build/
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+*.log
+coverage/
+.idea/
+**/dist/
+
+# OneDrive temp files
+~$*
+
+# wasm build outputs
+wasm/dist/
