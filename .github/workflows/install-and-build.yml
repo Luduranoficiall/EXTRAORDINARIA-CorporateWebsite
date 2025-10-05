@@ -1,0 +1,101 @@
+name: Install and Build (automatic)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  install-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Setup Java (for Maven)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Create logs directory
+        run: mkdir -p logs
+
+      - name: Install npm packages (all package.json)
+        run: |
+          set -e
+          find . -name package.json -not -path './**/node_modules/*' -print0 | while IFS= read -r -d '' f; do
+            dir=$(dirname "$f")
+            logfile="logs/npm-$(echo "$dir" | sed 's|\./||; s|/|_|g').log"
+            echo "==== npm install in $dir ====\n" | tee -a "$logfile"
+            pushd "$dir" >/dev/null
+            if [ -f package-lock.json ]; then
+              npm ci --prefer-offline --no-audit 2>&1 | tee -a "$PWD/../../$logfile" || true
+            else
+              npm install --no-audit 2>&1 | tee -a "$PWD/../../$logfile" || true
+            fi
+            popd >/dev/null
+          done
+
+      - name: Install Python requirements (all requirements*.txt)
+        run: |
+          set -e
+          find . -name 'requirements*.txt' -print0 | while IFS= read -r -d '' f; do
+            dir=$(dirname "$f")
+            logfile="logs/pip-$(echo "$dir" | sed 's|\./||; s|/|_|g').log"
+            echo "==== pip install -r $f ====\n" | tee -a "$logfile"
+            python -m pip install --upgrade pip setuptools wheel 2>&1 | tee -a "$logfile" || true
+            python -m pip install -r "$f" 2>&1 | tee -a "$logfile" || true
+          done
+
+      - name: Build Maven projects (all pom.xml)
+        run: |
+          set -e
+          find . -name pom.xml -print0 | while IFS= read -r -d '' f; do
+            dir=$(dirname "$f")
+            logfile="logs/mvn-$(echo "$dir" | sed 's|\./||; s|/|_|g').log"
+            echo "==== mvn package in $dir ====\n" | tee -a "$logfile"
+            pushd "$dir" >/dev/null
+            mvn -DskipTests clean package 2>&1 | tee -a "$PWD/../../$logfile" || true
+            popd >/dev/null
+          done
+
+      - name: Restore & Build .NET projects (*.csproj)
+        run: |
+          set -e
+          find . -name '*.csproj' -print0 | while IFS= read -r -d '' f; do
+            dir=$(dirname "$f")
+            logfile="logs/dotnet-$(echo "$dir" | sed 's|\./||; s|/|_|g').log"
+            echo "==== dotnet restore/build in $dir ====\n" | tee -a "$logfile"
+            pushd "$dir" >/dev/null
+            dotnet restore 2>&1 | tee -a "$PWD/../../$logfile" || true
+            dotnet build --no-restore 2>&1 | tee -a "$PWD/../../$logfile" || true
+            popd >/dev/null
+          done
+
+      - name: Upload logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: install-and-build-logs
+          path: logs
+
+      - name: Summary
+        run: |
+          echo "Logs uploaded as artifact 'install-and-build-logs'." 
+          echo "Open the Actions run and download the artifact to inspect detailed logs."
