@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+    image: extraordinaria-web:latest
+    container_name: extraordinaria_web
+    ports:
+      - "8080:80"
+    depends_on:
+      - ai_orchestrator
+    restart: unless-stopped
+
+  ai_orchestrator:
+    build:
+      context: ./languages/python/ai_orchestrator
+    image: extraordinaria-ai:latest
+    container_name: extraordinaria_ai
+    environment:
+      - AI_PROVIDER=${AI_PROVIDER:-stub}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - STORAGE_PROVIDER=${STORAGE_PROVIDER:-local}
+      - STORAGE_DIR=/data/storage
+      - S3_BUCKET=${S3_BUCKET}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ai-data:/data
+    expose:
+      - "5050"
+    restart: unless-stopped
+
+
+volumes:
+  ai-data:
+    driver: local

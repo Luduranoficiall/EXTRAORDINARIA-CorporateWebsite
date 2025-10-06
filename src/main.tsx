@@ -1,9 +1,10 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import "./index.css";
 import initIframeMessenger from "./iframeMessenger";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Inicializa o iframe messenger para interagir com iframes externos/preview
 const messenger = initIframeMessenger({
@@ -22,21 +23,31 @@ if (!rootEl) {
   const root = createRoot(rootEl);
   root.render(
     <React.StrictMode>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </React.StrictMode>
   );
 
   // Cleanup on unload to avoid leaking MessagePorts or listeners
-  window.addEventListener("beforeunload", () => {
+  // Cleanup on unload to avoid leaking MessagePorts or listeners
+  const onUnload = () => {
     try {
       messenger?.dispose?.();
     } catch (e) {
-      /* ignore */
+      // ignore
     }
-  });
+  };
+
+  window.addEventListener("beforeunload", onUnload);
+
+  // If the app is unmounted by HMR or similar, try to cleanup
+  if ((import.meta as any).hot?.dispose) {
+    (import.meta as any).hot.dispose(onUnload);
+  }
 }
 
 // opcional: expor para debugging no console
-if (process.env.NODE_ENV === "development") {
+if ((import.meta as any).env && (import.meta as any).env.DEV) {
   (window as any).__messenger = messenger;
 }

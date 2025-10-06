@@ -85,7 +85,11 @@ try {
       git commit -m "chore: initial commit (automated)"
       Log "Commit inicial criado."
     } else {
-      git commit -m "chore: workspace changes (automated)" || Log "Nada novo para commitar."
+      try {
+        git commit -m "chore: workspace changes (automated)" | Out-Null
+      } catch {
+        Log "Nada novo para commitar." | Out-Null
+      }
     }
   } else {
     Log "Nenhuma mudança detectada para commitar."

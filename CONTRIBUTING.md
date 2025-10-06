@@ -1,3 +1,12 @@
+# Contribuindo
+
+Obrigado por ajudar a tornar este projeto melhor. Algumas regras rápidas:
+
+- Use branches de feature com prefixo `feature/` ou `fix/`.
+- Execute `npm run lint` e `npm test` antes de abrir PR.
+- Inclua testes para novos comportamentos.
+
+Para desenvolvimento local com múltiplas linguagens veja `languages/README.md`.
 # Contributing
 
 Thank you for contributing! Please follow these guidelines to make your contributions smooth and consistent.

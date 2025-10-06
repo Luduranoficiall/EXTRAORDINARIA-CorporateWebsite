@@ -1,0 +1,1 @@
+This folder contains the pure-Python professional app for the project. See README.md for instructions.

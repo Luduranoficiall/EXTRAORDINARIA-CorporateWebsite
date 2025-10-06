@@ -29,6 +29,7 @@ import { AdvancedAnalytics } from './admin/AdvancedAnalytics';
 import { AutomationHub } from './admin/AutomationHub';
 import { PerformanceMonitor } from './admin/PerformanceMonitor';
 import { NotificationSystem } from './NotificationSystem';
+import AdminSecurityTools from './AdminSecurityTools';
 
 interface AdminPanelProps {
   onLogout: () => void;
@@ -137,6 +138,10 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
             <TabsTrigger value="automation" className="data-[state=active]:bg-primary data-[state=active]:text-black">
               <Workflow className="w-4 h-4 mr-2" />
               Automações
+            </TabsTrigger>
+            <TabsTrigger value="security" className="data-[state=active]:bg-primary data-[state=active]:text-black">
+              <Lock className="w-4 h-4 mr-2" />
+              Security
             </TabsTrigger>
             <TabsTrigger value="performance" className="data-[state=active]:bg-primary data-[state=active]:text-black">
               <Zap className="w-4 h-4 mr-2" />
@@ -383,6 +388,10 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
           {/* Automation Tab */}
           <TabsContent value="automation" className="space-y-6">
             <AutomationHub />
+          </TabsContent>
+
+          <TabsContent value="security" className="space-y-6">
+            <AdminSecurityTools />
           </TabsContent>
 
           {/* Performance Tab */}

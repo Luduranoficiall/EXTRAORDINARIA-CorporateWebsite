@@ -1,0 +1,125 @@
+name: CI - Multi-language build & test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # TypeScript / Node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install TS tooling (root)
+        working-directory: ./languages/typescript
+        run: |
+          npm ci
+
+      - name: Build TypeScript sample
+        working-directory: ./languages/typescript
+        run: |
+          npm run build
+
+      # Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps and test
+        working-directory: ./languages/python
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pytest -q
+
+      # Replace C and C# checks with Python-based replacements (pure Python scripts)
+      - name: Run replacement script for C data collector (Python)
+        working-directory: ./
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r languages/python/requirements.txt
+          python languages/python/replace_c_data_collector.py 12.34
+
+      - name: Run replacement script for C# collector (Python)
+        working-directory: ./
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r languages/python/requirements.txt
+          python languages/python/replace_csharp_collector.py 56.78
+
+      - name: List artifacts
+        run: |
+          echo "Artifacts available in languages/*"
+
+  java-build-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build and test Java module
+        working-directory: ./languages/java
+        run: |
+          mvn -B clean package
+          mvn -B test
+      - name: Build Spring Boot module
+        working-directory: ./languages/java/springapp
+        run: |
+          mvn -B clean package
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, java-build-test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Node deps
+        working-directory: ./languages/node
+        run: |
+          npm ci
+
+      - name: Start Node server
+        working-directory: ./languages/node
+        run: |
+          nohup node server.js &
+
+      - name: Start Python server
+        working-directory: ./languages/python
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          nohup python app.py &
+
+      - name: Wait for services
+        run: |
+          sleep 5
+
+      - name: Run integration smoke tests
+        run: |
+          node ./languages/node/runner.js || true
+

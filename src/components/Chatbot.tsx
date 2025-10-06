@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'motion/react';
@@ -13,6 +13,8 @@ export function Chatbot() {
     },
   ]);
   const [inputMessage, setInputMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const quickReplies = [
     'Agendar EXPERIENCI.A.',
@@ -53,6 +55,22 @@ export function Chatbot() {
     setInputMessage('');
   };
 
+  // focus management: focus input when opening, return focus to toggle when closing
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50);
+      // attach escape key handler
+      const handler = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsOpen(false);
+          toggleButtonRef.current?.focus();
+        }
+      };
+      document.addEventListener('keydown', handler);
+      return () => document.removeEventListener('keydown', handler);
+    }
+  }, [isOpen]);
+
   return (
     <>
       {/* Chatbot Button */}
@@ -63,6 +81,9 @@ export function Chatbot() {
       >
         <Button
           onClick={() => setIsOpen(!isOpen)}
+          ref={toggleButtonRef}
+          aria-expanded={isOpen}
+          aria-controls="chatbot-window"
           className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90 text-black shadow-lg glow-border"
         >
           {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
@@ -77,6 +98,7 @@ export function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
+            id="chatbot-window"
             className="fixed bottom-24 right-6 w-[380px] h-[600px] bg-card border border-primary/30 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
@@ -93,7 +115,7 @@ export function Chatbot() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4" role="log" aria-live="polite">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -134,15 +156,18 @@ export function Chatbot() {
             <div className="border-t border-white/10 p-4">
               <div className="flex gap-2">
                 <input
+                  ref={inputRef}
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); } }}
                   placeholder="Digite sua mensagem..."
+                  aria-label="Mensagem do usuário"
                   className="flex-1 bg-secondary border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary/50 transition-all"
                 />
                 <Button
                   onClick={() => handleSendMessage()}
+                  aria-label="Enviar mensagem"
                   className="bg-primary text-black hover:bg-primary/90 px-4"
                 >
                   <Send size={18} />

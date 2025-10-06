@@ -1,0 +1,22 @@
+name: Slack Test Notification
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Mensagem a enviar ao Slack'
+        required: false
+        default: 'Teste de notificação do repositório: tudo configurado!'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack message
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: repo,message
+          custom_payload: '{"text":"${{ github.event.inputs.message }}"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { Navigation } from './components/Navigation';
 import { ScrollIndicator } from './components/ScrollIndicator';
 import { BackToTop } from './components/BackToTop';
@@ -15,20 +15,21 @@ import { Blog } from './components/Blog';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { Chatbot } from './components/Chatbot';
-import { AdminPanel } from './components/AdminPanel';
-import { LandingPageAds } from './components/LandingPageAds';
+const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
+const LandingPageAds = React.lazy(() => import('./components/LandingPageAds').then(m => ({ default: m.LandingPageAds })));
 import { TrackingScripts } from './components/TrackingScripts';
 import { SocialMediaLinks } from './components/SocialMediaLinks';
 import { SEOHead } from './components/SEOHead';
 import { LoadingScreen } from './components/LoadingScreen';
 import { SkipToContent } from './components/SkipToContent';
 import { PageTransition } from './components/PageTransition';
-import { BotGPTProduct } from './components/BotGPTProduct';
+const BotGPTProduct = React.lazy(() => import('./components/BotGPTProduct').then(m => ({ default: m.BotGPTProduct })));
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Lock, X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
+import ErrorBoundary from './components/ErrorBoundary';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -41,7 +42,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isBotGPTPage, setIsBotGPTPage] = useState(false);
-  const adminTriggerRef = useRef({ clicks: 0, timer: null as NodeJS.Timeout | null });
+  const adminTriggerRef = useRef<{ clicks: number; timer: ReturnType<typeof setTimeout> | null }>({ clicks: 0, timer: null });
 
   // Check for admin access and ADS landing page via URL
   useEffect(() => {
@@ -95,8 +96,15 @@ export default function App() {
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Senha de exemplo - em produção, use autenticação adequada
-    const ADMIN_PASSWORD = (import.meta.env.VITE_ADMIN_PASSWORD as string) || 'EXTRAORDINARIA2024';
+    // Em produção, a senha administrativa precisa estar configurada em VITE_ADMIN_PASSWORD.
+    // Não usar um fallback embarcado para evitar exposição acidental.
+    const ADMIN_PASSWORD = (import.meta.env.VITE_ADMIN_PASSWORD as string) || '';
+    if (!ADMIN_PASSWORD) {
+      // Senha não configurada: bloqueia login administrativo e registra para diagnóstico.
+      toast.error('Acesso administrativo desabilitado: variáveis de ambiente não configuradas.');
+      return;
+    }
+
     if (adminPassword === ADMIN_PASSWORD) {
       setIsAdmin(true);
       setShowAdminLogin(false);
@@ -182,11 +190,13 @@ export default function App() {
   // Admin Panel View
   if (isAdmin) {
     return (
-      <>
-        <SEOHead title="Painel CEO - EXTRAORDINÁRI.A." />
+      <ErrorBoundary>
+        <SEOHead title="Painel CEO - EXTRAORDINÁ.RA." />
         <Toaster position="top-right" richColors />
-        <AdminPanel onLogout={handleAdminLogout} />
-      </>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Carregando painel...</div>}>
+          <AdminPanel onLogout={handleAdminLogout} />
+        </Suspense>
+      </ErrorBoundary>
     );
   }
 
@@ -270,9 +280,9 @@ export default function App() {
   // BotGPT Product Page
   if (isBotGPTPage) {
     return (
-      <>
+      <ErrorBoundary>
         <SEOHead 
-          title="BotGPT - Atendente Virtual 24/7 para WhatsApp | EXTRAORDINÁRI.A."
+          title="BotGPT - Atendente Virtual 24/7 para WhatsApp | EXTRAORDINÁ.RA."
           description="Tenha seu próprio atendente virtual que responde clientes, fecha pedidos e agenda serviços 24/7 pelo WhatsApp. Teste grátis por 7 dias!"
           keywords="chatbot whatsapp, bot atendimento, automação whatsapp, atendimento 24 7, bot vendas, chatbot restaurante, chatbot clinica"
         />
@@ -284,9 +294,11 @@ export default function App() {
         <Toaster position="top-right" richColors />
         <SkipToContent />
         <PageTransition>
-          <BotGPTProduct />
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Carregando produto...</div>}>
+            <BotGPTProduct />
+          </Suspense>
         </PageTransition>
-      </>
+      </ErrorBoundary>
     );
   }
 
@@ -379,7 +391,9 @@ export default function App() {
         
         <Footer />
         
-        <Chatbot />
+        <Suspense fallback={null}>
+          <Chatbot />
+        </Suspense>
         <BackToTop />
         
         {/* Hidden Admin Access Trigger - Triple click */}

@@ -33,13 +33,17 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
+    <nav role="navigation" aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div 
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => onNavigate('home')}
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate('home'); } }}
+            role="button"
+            aria-label="Ir para o início"
           >
             <Brain className="w-10 h-10 text-primary animate-pulse" strokeWidth={1.5} />
             <span className="text-2xl font-black tracking-tight">
@@ -53,6 +57,7 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
+                aria-current={activeSection === item.id ? 'page' : undefined}
                 className={`font-semibold transition-all hover:text-primary ${
                   activeSection === item.id ? 'text-primary' : 'text-white/70'
                 }`}

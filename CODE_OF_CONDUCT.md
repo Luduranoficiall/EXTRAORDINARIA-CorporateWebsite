@@ -1,3 +1,6 @@
+# Código de Conduta
+
+Seja respeitoso e profissional. Trate colegas com cortesia. Comportamentos abusivos não serão tolerados.
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge

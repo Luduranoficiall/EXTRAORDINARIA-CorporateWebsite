@@ -185,6 +185,8 @@ export function BotGPTDemo() {
                     <Badge
                       key={index}
                       onClick={() => handleQuickReply(reply)}
+                      role="button"
+                      aria-label={`Resposta rápida: ${reply}`}
                       className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 cursor-pointer px-4 py-2"
                     >
                       {reply}
@@ -200,7 +202,7 @@ export function BotGPTDemo() {
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSend(); } }}
                   placeholder="Digite sua mensagem..."
                   className="bg-secondary border-white/10 focus:border-primary/50"
                 />
