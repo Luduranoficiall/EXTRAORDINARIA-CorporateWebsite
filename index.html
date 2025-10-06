@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BotGPT by EXTRAORDINARI.A.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="scripts.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container header-bar">
+      <div class="brand">EXTRAORDINARI.A.</div>
+      <nav class="nav">
+        <a class="link" href="#planos">Planos</a>
+        <a class="link" href="#demo">Demonstração</a>
+        <a class="link" href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge">Lançamento</span>
+        <h1>BotGPT by EXTRAORDINARI.A.</h1>
+        <p>Seu atendente virtual 24h que responde clientes, fecha pedidos e agenda serviços pelo WhatsApp e pelo site. Teste grátis por 7 dias.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#trial">Começar teste grátis</a>
+          <a class="btn btn-ghost" href="#planos">Ver planos</a>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="mt0">Casos de uso</h3>
+        <ul class="ul-clean">
+          <li>WhatsApp de Atendimento + Vendas</li>
+          <li>FAQ Inteligente para sites</li>
+          <li>Agendamento automático</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="planos" class="grid grid-3">
+      <div class="card">
+        <h3 class="mt0">Plano Essencial</h3>
+        <p>R$ 97/mês</p>
+        <ul class="ul-pl">
+          <li>FAQ + captação de leads</li>
+          <li>1 canal (site ou WhatsApp)</li>
+        </ul>
+        <a class="btn btn-primary" href="#trial">Teste grátis</a>
+      </div>
+      <div class="card">
+        <h3 class="mt0">Plano Avançado</h3>
+        <p>R$ 197/mês</p>
+        <ul class="ul-pl">
+          <li>FAQ + WhatsApp</li>
+          <li>Agendamento + relatórios</li>
+        </ul>
+        <a class="btn btn-primary" href="#trial">Teste grátis</a>
+      </div>
+      <div class="card">
+        <h3 class="mt0">Plano Premium</h3>
+        <p>R$ 497/mês</p>
+        <ul class="ul-pl">
+          <li>Tudo incluso</li>
+          <li>Integração CRM/ERP + branding</li>
+        </ul>
+        <a class="btn btn-primary" href="#trial">Teste grátis</a>
+      </div>
+    </section>
+
+    <section id="demo" class="card mt20">
+      <h3 class="mt0">Demonstração</h3>
+      <p>Assista um vídeo rápido mostrando o bot fechando pedidos pelo WhatsApp e respondendo dúvidas no site.</p>
+      <div class="video-placeholder">Vídeo (em breve)</div>
+    </section>
+
+    <section id="contato" class="card mt20">
+      <h3 class="mt0">Contato</h3>
+      <p>Quer pilotar o BotGPT no seu negócio? Preencha o formulário e começamos em até 3 dias.</p>
+      <form id="lead-form" class="form-grid" method="POST">
+        <input class="input" name="nome" placeholder="Nome" required />
+        <input class="input" name="whatsapp" placeholder="WhatsApp" required />
+        <input class="input" name="segmento" placeholder="Segmento (ex: pizzaria)" required />
+        <!-- Hidden defaults for Formsubmit -->
+        <input type="hidden" name="_subject" value="Novo lead BotGPT (Landing)" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="/thanks.html" />
+        <button class="btn btn-primary" type="submit">Quero testar por 7 dias</button>
+        <div id="lead-status" class="mt20" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+  <footer class="container">
+    © EXTRAORDINARI.A. — Todos os direitos reservados
+  </footer>
+</body>
+</html>
