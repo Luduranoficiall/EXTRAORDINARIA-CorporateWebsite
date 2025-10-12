@@ -1,0 +1,10 @@
+<frozen runpy>:128: RuntimeWarning: 'python_app.app' found in sys.modules after import of package 'python_app', but prior to execution of 'python_app.app'; this may result in unpredictable behaviour
+C:\Users\User\AppData\Roaming\Python\Python313\site-packages\flask_limiter\_extension.py:364: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://100.126.11.217:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:extraordinaria:{'type': 'access', 'rid': '0924b94c-4773-49ac-a992-630347ff4cd7', 'method': 'GET', 'path': '/healthz', 'status': 200, 'dur_ms': 0.61, 'ip': '127.0.0.1'}
+INFO:werkzeug:127.0.0.1 - - [09/Oct/2025 15:02:23] "GET /healthz HTTP/1.1" 200 -

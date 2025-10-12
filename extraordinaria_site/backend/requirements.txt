@@ -1,0 +1,13 @@
+openai
+requests
+PyJWT
+python-dotenv
+flask
+flask-cors
+bcrypt
+pandas
+plotly
+stripe
+simple-salesforce
+firebase-admin
+google-auth

@@ -1,0 +1,91 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install frontend deps
+        working-directory: CorporateWebsite
+        run: npm ci --no-audit --prefer-offline
+
+      - name: TypeCheck
+        working-directory: CorporateWebsite
+        run: npx tsc -p tsconfig.json --noEmit
+
+      - name: Frontend tests (Vitest)
+        working-directory: CorporateWebsite
+        run: npm run -s test:frontend
+
+      - name: Backend deps
+        working-directory: CorporateWebsite/python-app
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Backend tests (pytest)
+        working-directory: CorporateWebsite
+        run: npm run -s test:backend
+name: CI - Frontend & Backend Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: |
+            CorporateWebsite/package-lock.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install frontend deps
+        working-directory: CorporateWebsite
+        run: npm ci
+
+      - name: Install backend deps
+        working-directory: CorporateWebsite/python-app
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run frontend tests (Vitest)
+        working-directory: CorporateWebsite
+        run: npm run -s test:frontend
+
+      - name: Run backend tests (pytest)
+        working-directory: CorporateWebsite
+        run: npm run -s test:backend

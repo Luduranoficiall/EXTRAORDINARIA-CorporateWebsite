@@ -1,0 +1,21 @@
+{
+    "name": "extraordinaria_site",
+    "version": "1.0.0",
+    "description": "Projeto EXTRAORDINÁRI.A. - Site corporativo com React e TypeScript.",
+    "main": "index.js",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "keywords": [
+        "extraordinaria",
+        "react",
+        "typescript"
+    ],
+    "author": "EXTRAORDINÁRI.A.",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {}
+}

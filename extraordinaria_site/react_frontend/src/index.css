@@ -1,0 +1,16 @@
+/* Minimal styles for the placeholder frontend */
+:root { --bg: #000; }
+html,body,#root { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: var(--bg); }
+.app-root { min-height: 100vh; display:flex; align-items:center; justify-content:center; }
+.frontend-placeholder { text-align:center; }
+.placeholder-title { color: #fff; font-size:1.6rem; }
+.placeholder-sub { color: #cfcfcf; margin-top: .5rem; }
+/* Estilos mínimos globais usados pelo app */
+:root { --bg: #000; --muted: #9ca3af; }
+html,body,#root { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: var(--bg); color: #fff; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+/* small utility used by components */
+.app-root { min-height: 100vh; }
+
+.status-message { color: #ffffff; margin-top: 12px; font-size: 0.95rem; opacity: 0.95; }

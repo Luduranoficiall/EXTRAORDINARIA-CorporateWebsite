@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="1.211" timestamp="2025-10-09T20:43:03.345859-03:00" hostname="DESKTOP-6RDE8ID"><testcase classname="" name="CorporateWebsite.python-app.tests.test_api" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\Users\User\OneDrive\Documentos\Extraordinaria.ai\CorporateWebsite\python-app\tests\test_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Program Files\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python-app\tests\test_api.py:2: in &lt;module&gt;
+    from python_app.app import create_app
+python-app\python_app\__init__.py:1: in &lt;module&gt;
+    from .app import create_app
+python-app\python_app\app.py:2: in &lt;module&gt;
+    from dotenv import load_dotenv
+E   ModuleNotFoundError: No module named 'dotenv'</error></testcase><testcase classname="" name="CorporateWebsite.python-app.tests.test_code_api" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\Users\User\OneDrive\Documentos\Extraordinaria.ai\CorporateWebsite\python-app\tests\test_code_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Program Files\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python-app\tests\test_code_api.py:2: in &lt;module&gt;
+    from python_app.app import create_app
+python-app\python_app\__init__.py:1: in &lt;module&gt;
+    from .app import create_app
+python-app\python_app\app.py:2: in &lt;module&gt;
+    from dotenv import load_dotenv
+E   ModuleNotFoundError: No module named 'dotenv'</error></testcase></testsuite></testsuites>
