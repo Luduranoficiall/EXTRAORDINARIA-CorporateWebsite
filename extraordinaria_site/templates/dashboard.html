@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>🔐 EXTRAORDINÁRIA - CEO Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00D4FF;
+            --primary-dark: #0099FF;
+            --secondary: #7C3AED;
+            --white: #FFFFFF;
+            --black: #000000;
+            --dark-gray: #111111;
+            --gray: #666666;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(124,58,237,0.1) 100%);
+        }
+
+        .login-box {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid rgba(0,212,255,0.3);
+            padding: 2.5rem;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,212,255,0.2);
+        }
+
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 5px;
+            background: rgba(0,0,0,0.5);
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0,212,255,0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--black);
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.4);
+        }
+
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .header-dashboard {
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .header-dashboard h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: rgba(255,60,60,0.1);
+            border: 1px solid rgba(255,60,60,0.5);
+            color: #ff3c3c;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,60,60,0.2);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-card {
+            background: rgba(0,212,255,0.05);
+            border: 1px solid rgba(0,212,255,0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dashboard-card:hover {
+            background: rgba(0,212,255,0.1);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,212,255,0.2);
+        }
+
+        .dashboard-card h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .dashboard-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-stats {
+            background: rgba(0,212,255,0.05);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .card-stats strong {
+            color: var(--primary);
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .status-online {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(0,0,0,0.95);
+            border: 1px solid rgba(0,212,255,0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 600px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .modal-body h3 {
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .modal-body ul {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .modal-body li {
+            padding: 0.5rem 0;
+        }
+
+        .modal-body li::before {
+            content: '→ ';
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .kpi-card {
+            background: rgba(0,212,255,0.05);
+            border: 1px solid rgba(0,212,255,0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .kpi-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-dashboard {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <h1>EXTRAORDINÁRI.A.</h1>
+            <p>🔐 CEO Dashboard - Acesso Exclusivo</p>
+            <form onsubmit="loginDashboard(event)">
+                <div class="form-group">
+                    <label>Email CEO</label>
+                    <input type="email" id="emailInput" placeholder="seu.email@extraordinaria.ai" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="passwordInput" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login">🔓 Acessar Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboardScreen">
+        <div class="header-dashboard">
+            <h1>🎯 CEO Dashboard - EXTRAORDINÁRI.A.</h1>
+            <button class="logout-btn" onclick="logoutDashboard()">🚪 Sair</button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-value">R$ 45.230</div>
+                <div class="kpi-label">MRR (Mensal)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">127</div>
+                <div class="kpi-label">Clientes Ativos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">3.2k</div>
+                <div class="kpi-label">Leads/Mês</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">12.5%</div>
+                <div class="kpi-label">Taxa de Conversão</div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+            <!-- Power BI -->
+            <div class="dashboard-card" onclick="openModal('powerbi')">
+                <div class="card-icon">📊</div>
+                <h3>Power BI Analytics</h3>
+                <p>Dashboard de vendas, ROI, previsões e análises detalhadas em tempo real.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Conectado
+                    <strong>Últimas 24h: +R$ 8.420</strong>
+                </div>
+            </div>
+
+            <!-- Stripe -->
+            <div class="dashboard-card" onclick="openModal('stripe')">
+                <div class="card-icon">💳</div>
+                <h3>Stripe Payments</h3>
+                <p>Gestão de transações, cobranças, recebimentos e análise de pagamentos.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 98% Aprovação
+                    <strong>Volume: R$ 127.450</strong>
+                </div>
+            </div>
+
+            <!-- Salesforce CRM -->
+            <div class="dashboard-card" onclick="openModal('salesforce')">
+                <div class="card-icon">👥</div>
+                <h3>Salesforce CRM</h3>
+                <p>Gestão de leads, pipeline de vendas, histórico de clientes e automações.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Conectado
+                    <strong>Pipeline: R$ 580.000</strong>
+                </div>
+            </div>
+
+            <!-- Firebase -->
+            <div class="dashboard-card" onclick="openModal('firebase')">
+                <div class="card-icon">🔥</div>
+                <h3>Firebase Analytics</h3>
+                <p>Rastreamento de usuários, eventos, performance da aplicação e comportamento.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Ativo
+                    <strong>MAU: 12.340 usuários</strong>
+                </div>
+            </div>
+
+            <!-- BotGPT Management -->
+            <div class="dashboard-card" onclick="openModal('botgpt')">
+                <div class="card-icon">🤖</div>
+                <h3>BotGPT Management</h3>
+                <p>Criar agentes, configurar personalidades, monitorar conversas, treinar modelos.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Operational
+                    <strong>18 Bots ativos | 2.4k conversas/dia</strong>
+                </div>
+            </div>
+
+            <!-- KPIs Dashboard -->
+            <div class="dashboard-card" onclick="openModal('kpis')">
+                <div class="card-icon">📈</div>
+                <h3>KPIs & Metrics</h3>
+                <p>Conversão de leads, ticket médio, lifetime value, custo de aquisição customizado.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Atualizado
+                    <strong>CAC: R$ 320 | LTV: R$ 8.500</strong>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="dashboard-card" onclick="openModal('projects')">
+                <div class="card-icon">📋</div>
+                <h3>Project Management</h3>
+                <p>Status de entregas, equipes, cronograma de projetos, documentos e recursos.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 12 Projetos
+                    <strong>92% Taxa de Conclusão</strong>
+                </div>
+            </div>
+
+            <!-- Clients & Cases -->
+            <div class="dashboard-card" onclick="openModal('clients')">
+                <div class="card-icon">🏢</div>
+                <h3>Clients & Cases</h3>
+                <p>Portfólio de clientes, estudos de caso, depoimentos, retorno sobre investimento.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 45 Cases
+                    <strong>ROI Médio: 340%</strong>
+                </div>
+            </div>
+
+            <!-- Integrations -->
+            <div class="dashboard-card" onclick="openModal('integrations')">
+                <div class="card-icon">⚙️</div>
+                <h3>Integrações & APIs</h3>
+                <p>Todas as ferramentas conectadas: Zapier, n8n, webhooks, automações completas.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 23 Conexões
+                    <strong>Zero Erros</strong>
+                </div>
+            </div>
+
+            <!-- Email & WhatsApp -->
+            <div class="dashboard-card" onclick="openModal('comms')">
+                <div class="card-icon">📧</div>
+                <h3>Email + WhatsApp</h3>
+                <p>Campanhas de email, automações WhatsApp, sequências, agendamento inteligente.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> Ativo
+                    <strong>Taxa de Abertura: 38%</strong>
+                </div>
+            </div>
+
+            <!-- Reports & Analytics -->
+            <div class="dashboard-card" onclick="openModal('reports')">
+                <div class="card-icon">📄</div>
+                <h3>Reports Customizados</h3>
+                <p>Gerar relatórios sob demanda, exportar dados, análises profundas, previsões IA.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 87 Relatórios
+                    <strong>Atualizados em Tempo Real</strong>
+                </div>
+            </div>
+
+            <!-- Secret Tools -->
+            <div class="dashboard-card" onclick="openModal('secret')">
+                <div class="card-icon">🔐</div>
+                <h3>Ferramentas Secretas</h3>
+                <p>Acesso a todas as ferramentas externas: Veo AI, Base44, Replit, TensorFlow e +20 mais.</p>
+                <div class="card-stats">
+                    <span class="status-online"></span> 45 Ferramentas
+                    <strong>CEO Only Access</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal Title</h2>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const correctEmail = 'ceo@extraordinaria.ai';
+        const correctPassword = 'EXTRAORDINARIA2024';
+
+        function loginDashboard(event) {
+            event.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (email === correctEmail && password === correctPassword) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').classList.add('active');
+                localStorage.setItem('ceoDashboardAuth', 'true');
+            } else {
+                alert('❌ Email ou senha incorretos');
+            }
+        }
+
+        function logoutDashboard() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').classList.remove('active');
+            document.getElementById('emailInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            localStorage.removeItem('ceoDashboardAuth');
+        }
+
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            const content = {
+                powerbi: {
+                    title: '📊 Power BI Analytics',
+                    body: `
+                        <h3>Dashboard de Vendas em Tempo Real</h3>
+                        <p>Integração completa com Power BI para análise profunda de dados:</p>
+                        <ul>
+                            <li>Dashboard de vendas por período</li>
+                            <li>Análise de ROI por serviço</li>
+                            <li>Previsões com Machine Learning</li>
+                            <li>Segmentação de clientes</li>
+                            <li>Análise de churn</li>
+                            <li>KPIs customizados em tempo real</li>
+                        </ul>
+                        <h3>Recursos Disponíveis</h3>
+                        <ul>
+                            <li>Relatórios dinâmicos e interativos</li>
+                            <li>Exportação de dados em múltiplos formatos</li>
+                            <li>Alertas automáticos por anomalias</li>
+                            <li>Comparativo período vs período</li>
+                            <li>Análise de tendências</li>
+                            <li>Integração com todas as fontes de dados</li>
+                        </ul>
+                        <h3>Acesso</h3>
+                        <p>Link: <strong>https://app.powerbi.com/[seu-workspace]</strong></p>
+                        <p>Status: <span class="status-online"></span> Conectado e Atualizado</p>
+                    `
+                },
+                stripe: {
+                    title: '💳 Stripe - Gestão de Pagamentos',
+                    body: `
+                        <h3>Dashboard Financeiro Completo</h3>
+                        <p>Gerenciamento total de transações e receitas:</p>
+                        <ul>
+                            <li>Transações em tempo real</li>
+                            <li>Relatórios de receita</li>
+                            <li>Gestão de cobranças recorrentes</li>
+                            <li>Análise de taxa de aprovação</li>
+                            <li>Disputas e reembolsos</li>
+                            <li>Webhooks configurados</li>
+                        </ul>
+                        <h3>Métricas Principais</h3>
+                        <ul>
+                            <li>Volume diário: R$ 4.250</li>
+                            <li>Taxa de aprovação: 98%</li>
+                            <li>Chargeback rate: 0.08%</li>
+                            <li>Lifetime value por cliente: R$ 8.500</li>
+                        </ul>
+                        <p>Dashboard: <strong>https://dashboard.stripe.com</strong></p>
+                    `
+                },
+                salesforce: {
+                    title: '👥 Salesforce CRM',
+                    body: `
+                        <h3>Gestão de Relacionamento com Clientes</h3>
+                        <p>Sistema completo de CRM para gerenciar pipeline:</p>
+                        <ul>
+                            <li>Gestão de leads qualificados</li>
+                            <li>Pipeline de oportunidades</li>
+                            <li>Histórico de interações por cliente</li>
+                            <li>Previsão de fechamento</li>
+                            <li>Automações de follow-up</li>
+                            <li>Relatórios de vendas</li>
+                        </ul>
+                        <h3>Pipeline Atual</h3>
+                        <ul>
+                            <li>Leads: 324 (qualificados)</li>
+                            <li>Opportunities: R$ 580.000</li>
+                            <li>Deals em negociação: 12</li>
+                            <li>Taxa de conversão: 12.5%</li>
+                        </ul>
+                    `
+                },
+                firebase: {
+                    title: '🔥 Firebase Analytics',
+                    body: `
+                        <h3>Analytics de Aplicação</h3>
+                        <p>Rastreamento completo de usuários e comportamento:</p>
+                        <ul>
+                            <li>Monthly Active Users (MAU): 12.340</li>
+                            <li>Daily Active Users (DAU): 4.230</li>
+                            <li>Sessões por usuário: 8.3</li>
+                            <li>Taxa de retenção: 73%</li>
+                            <li>Jornada do usuário</li>
+                            <li>Funis de conversão</li>
+                        </ul>
+                        <h3>Eventos Rastreados</h3>
+                        <ul>
+                            <li>Login: 2.300/dia</li>
+                            <li>Consulta: 890/dia</li>
+                            <li>Compra: 240/dia</li>
+                            <li>Suporte: 120/dia</li>
+                        </ul>
+                    `
+                },
+                botgpt: {
+                    title: '🤖 BotGPT Management',
+                    body: `
+                        <h3>Gerenciador de Agentes de IA</h3>
+                        <p>Plataforma completa para criar e gerenciar bots:</p>
+                        <ul>
+                            <li>18 Bots ativos em produção</li>
+                            <li>2.400 conversas por dia</li>
+                            <li>Taxa de resolução: 94%</li>
+                            <li>Tempo médio de resposta: 2.3s</li>
+                            <li>Satisfação do cliente: 4.7/5</li>
+                        </ul>
+                        <h3>Funcionalidades</h3>
+                        <ul>
+                            <li>Criar novos agentes em 5 minutos</li>
+                            <li>Treinar com dados da empresa</li>
+                            <li>Integrar com WhatsApp, Website, Slack</li>
+                            <li>Monitorar performance em tempo real</li>
+                            <li>Personalizar voz e comportamento</li>
+                            <li>Escalabilidade automática</li>
+                        </ul>
+                    `
+                },
+                kpis: {
+                    title: '📈 KPIs & Metrics',
+                    body: `
+                        <h3>Indicadores-Chave de Desempenho</h3>
+                        <ul>
+                            <li><strong>CAC (Customer Acquisition Cost):</strong> R$ 320</li>
+                            <li><strong>LTV (Lifetime Value):</strong> R$ 8.500</li>
+                            <li><strong>LTV/CAC Ratio:</strong> 26.5x</li>
+                            <li><strong>Churn Rate:</strong> 2.1%</li>
+                            <li><strong>MRR (Monthly Recurring Revenue):</strong> R$ 45.230</li>
+                            <li><strong>ARR (Annual Recurring Revenue):</strong> R$ 542.760</li>
+                        </ul>
+                        <h3>Conversão</h3>
+                        <ul>
+                            <li>Visitante → Lead: 3.2%</li>
+                            <li>Lead → Opportunity: 28%</li>
+                            <li>Opportunity → Cliente: 12.5%</li>
+                            <li>Taxa de retenção: 97.9%</li>
+                        </ul>
+                    `
+                },
+                projects: {
+                    title: '📋 Project Management',
+                    body: `
+                        <h3>Projetos em Andamento</h3>
+                        <ul>
+                            <li><strong>Projeto 1:</strong> Site EXTRAORDINÁRIA v2.0 - 92% completo</li>
+                            <li><strong>Projeto 2:</strong> BotGPT Marketplace - 78% completo</li>
+                            <li><strong>Projeto 3:</strong> Power BI Enterprise - 85% completo</li>
+                            <li><strong>Projeto 4:</strong> Mobile App - 65% completo</li>
+                        </ul>
+                        <h3>Recursos</h3>
+                        <ul>
+                            <li>Status de todos os projetos</li>
+                            <li>Cronogramas e marcos</li>
+                            <li>Alocação de equipe</li>
+                            <li>Orçamento vs Realizado</li>
+                            <li>Documentação e artefatos</li>
+                        </ul>
+                    `
+                },
+                clients: {
+                    title: '🏢 Clients & Cases',
+                    body: `
+                        <h3>Portfolio de Clientes</h3>
+                        <ul>
+                            <li><strong>Total de Clientes:</strong> 127</li>
+                            <li><strong>Casos de Sucesso:</strong> 45</li>
+                            <li><strong>Taxa de Satisfação:</strong> 4.8/5</li>
+                            <li><strong>NPS (Net Promoter Score):</strong> 72</li>
+                        </ul>
+                        <h3>Case Mais Recente</h3>
+                        <ul>
+                            <li>Cliente: Pizzaria Big Pizza</li>
+                            <li>Solução: BotGPT + Automações</li>
+                            <li>ROI: 340% em 6 meses</li>
+                            <li>Economia: R$ 15.000/mês em atendimento</li>
+                        </ul>
+                    `
+                },
+                integrations: {
+                    title: '⚙️ Integrações & APIs',
+                    body: `
+                        <h3>Ferramentas Integradas (23 conexões ativas)</h3>
+                        <ul>
+                            <li>✅ Power BI</li>
+                            <li>✅ Stripe</li>
+                            <li>✅ Salesforce</li>
+                            <li>✅ Firebase</li>
+                            <li>✅ Zapier</li>
+                            <li>✅ n8n Automations</li>
+                            <li>✅ WhatsApp Business</li>
+                            <li>✅ Gmail & Outlook</li>
+                            <li>✅ Slack</li>
+                            <li>✅ GitHub</li>
+                            <li>✅ E mais...</li>
+                        </ul>
+                        <h3>Status</h3>
+                        <ul>
+                            <li>Conexões ativas: 23/23</li>
+                            <li>Taxa de uptime: 99.9%</li>
+                            <li>Erros detectados: 0</li>
+                            <li>Últimas 24h: 100% operacional</li>
+                        </ul>
+                    `
+                },
+                comms: {
+                    title: '📧 Email + WhatsApp',
+                    body: `
+                        <h3>Comunicação Integrada</h3>
+                        <h3>Email Marketing</h3>
+                        <ul>
+                            <li>Contatos: 8.230</li>
+                            <li>Campanhas ativas: 5</li>
+                            <li>Taxa de abertura: 38%</li>
+                            <li>Taxa de clique: 12%</li>
+                            <li>Taxa de conversão: 3.2%</li>
+                        </ul>
+                        <h3>WhatsApp Business</h3>
+                        <ul>
+                            <li>Contatos: 3.420</li>
+                            <li>Mensagens/dia: 2.100</li>
+                            <li>Taxa de resposta: 94%</li>
+                            <li>Tempo médio: 2.3 minutos</li>
+                        </ul>
+                    `
+                },
+                reports: {
+                    title: '📄 Reports Customizados',
+                    body: `
+                        <h3>Gerar Relatórios</h3>
+                        <ul>
+                            <li>Relatório Mensal de Vendas</li>
+                            <li>Análise de Clientes</li>
+                            <li>Performance de BotGPT</li>
+                            <li>ROI por Serviço</li>
+                            <li>Previsões de Receita</li>
+                            <li>Análise Competitiva</li>
+                        </ul>
+                        <h3>Relatórios Disponíveis</h3>
+                        <ul>
+                            <li>87 relatórios pré-configurados</li>
+                            <li>Exportação em PDF, Excel, JSON</li>
+                            <li>Agendamento automático</li>
+                            <li>Compartilhamento seguro</li>
+                        </ul>
+                    `
+                },
+                secret: {
+                    title: '🔐 Ferramentas Secretas - CEO Only',
+                    body: `
+                        <h3>45 Ferramentas Externas Integradas</h3>
+                        <p><strong>Acesso exclusivo do CEO a todas as plataformas:</strong></p>
+                        <ul>
+                            <li>🎨 Google Veo (Video Generation)</li>
+                            <li>💰 Stripe Dashboard</li>
+                            <li>🤖 DeepMind Models</li>
+                            <li>☁️ Firebase Console</li>
+                            <li>📊 Power BI Premium</li>
+                            <li>💼 Salesforce Einstein</li>
+                            <li>🌐 Base44 Analytics</li>
+                            <li>💻 Replit IDE</li>
+                            <li>📱 Flutter Studio</li>
+                            <li>🧠 TensorFlow Tools</li>
+                            <li>📝 NotebookLM</li>
+                            <li>✅ ClickUp PRO</li>
+                            <li>🎨 Wix Studio</li>
+                            <li>🤖 Pippit AI</li>
+                            <li>🎯 Trae AI</li>
+                            <li>💡 Ask Codi</li>
+                            <li>E mais 29 ferramentas...</li>
+                        </ul>
+                        <h3>Segurança</h3>
+                        <ul>
+                            <li>Acesso criptografado</li>
+                            <li>Autenticação 2FA</li>
+                            <li>Logs de auditoria</li>
+                            <li>CEO Only - Senhas armazenadas em cofre seguro</li>
+                        </ul>
+                    `
+                }
+            };
+
+            if (content[type]) {
+                title.textContent = content[type].title;
+                body.innerHTML = content[type].body;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('ceoDashboardAuth') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').classList.add('active');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
