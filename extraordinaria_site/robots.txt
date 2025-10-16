@@ -1,0 +1,36 @@
+# EXTRAORDINÁRIA.AI - Configuração de SEO Completa
+# robots.txt otimizado para melhor indexação
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /dashboard.html
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.log
+Disallow: /api/
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
+
+# Sitemaps
+Sitemap: https://luduranoficiall.github.io/EXTRAORDINARIA-CorporateWebsite/sitemap.xml
+Sitemap: https://extraordinaria.ai/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
