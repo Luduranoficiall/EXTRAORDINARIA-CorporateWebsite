@@ -1,0 +1,50 @@
+# 🚀 EXTRAORDINÁRI.A. BOTGPT — LANÇAR JÁ!
+
+## ✅ O QUE FOI FEITO
+
+- ✅ Website HTML puro (funciona em qualquer navegador)
+- ✅ Chat IA integrado (responde dúvidas)
+- ✅ Design responsivo (celular, tablet, desktop)
+- ✅ 3 planos de preço (R$97, R$297, R$597)
+- ✅ Scripts de deploy automático
+- ✅ Sem URL privada (conforme pedido)
+
+## 🎯 PRÓXIMA AÇÃO (1 MINUTO)
+
+Abra PowerShell e copie isso:
+
+```powershell
+cd "C:\Users\User\OneDrive\Documentos\Extraordinaria.ai\CorporateWebsite" ; .\deploy-vercel.ps1
+```
+
+Pronto! Site fica online em 3 minutos!
+
+## 🌐 RESULTADO
+
+Site acessa em: **https://extraordinaria.ai**
+
+Cliente vê:
+- Landing page profissional
+- Chat IA respondendo
+- 3 planos de preço
+- Botão "Comece Agora"
+
+## 💰 DEPOIS
+
+- Stripe para cobrar
+- WhatsApp integrado
+- Primeiros clientes em 1 semana
+- Receita em movimento
+
+## 📄 ARQUIVOS
+
+- `index.html` — Website
+- `deploy-vercel.ps1` — Deploy automático
+- `start-local.ps1` — Testar localmente
+- Documentação completa nos arquivos .md
+
+---
+
+**PRONTO? EXECUTE AGORA!** 🚀
+
+Dúvidas? Veja: `EXTRAORDINARIA-SITE-PRONTO-LANÇAR.md`

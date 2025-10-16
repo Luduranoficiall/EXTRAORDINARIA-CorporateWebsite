@@ -1,0 +1,5 @@
+C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/build/CMakeFiles/hello_cpp.dir
+C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/build/CMakeFiles/stats.dir
+C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/build/CMakeFiles/run_stats.dir
+C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/build/CMakeFiles/ZERO_CHECK.dir

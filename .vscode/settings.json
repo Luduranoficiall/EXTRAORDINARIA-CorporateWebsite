@@ -1,4 +1,6 @@
 {
     "terminal.integrated.sendKeybindingsToShell": true,
-    "cmake.sourceDirectory": "C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/CorporateWebsite/languages/cpp"
+    "cmake.sourceDirectory": "C:/Users/User/OneDrive/Documentos/Extraordinaria.ai/CorporateWebsite/languages/cpp",
+    "github.copilot.chat.virtualTools.threshold": 120,
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

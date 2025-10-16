@@ -1,7 +1,0 @@
-{
-  "src/**/*.{ts,tsx,js,jsx}": [
-    "npm run lint:fix",
-    "npm run format",
-    "git add"
-  ]
-}
